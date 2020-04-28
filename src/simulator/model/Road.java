@@ -179,6 +179,16 @@ public abstract class Road extends SimulatedObject{
 
 		public Weather getTiempo() {
 			return tiempo;
+		}
+
+		public double getTotalCO2() {
+			// TODO Auto-generated method stub
+			return this.contaminacionTotal;
+		}
+
+		public double getCO2Limit() {
+			// TODO Auto-generated method stub
+			return this.alarmaContaminacion;
 		}	
 
 	

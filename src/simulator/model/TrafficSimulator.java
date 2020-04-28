@@ -1,25 +1,30 @@
 package simulator.model;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 
 import org.json.JSONObject;
 
 import simulator.misc.SortedArrayList;
+import simulator.view.Observable;
 
-public class TrafficSimulator {
+public class TrafficSimulator implements Observable<TrafficSimObserver>{
 
 	private RoadMap roadMap;
 	private List<Event> eventList;
 	private int time;
+	private List<TrafficSimObserver> observers;
 	
 	//La clase TrafficSimulator tiene sólo una constructora pública por defecto, que inicializa
 	//los campos a sus valores por defecto
 	public TrafficSimulator() {
 		this.time=0;
 		this.roadMap = new RoadMap();
-		this.eventList = new SortedArrayList<Event>();;
+		this.eventList = new SortedArrayList<Event>();
+		observers = new ArrayList<>();
 	}
 	
 	
@@ -95,5 +100,23 @@ el método report() del mapa de carreteras.
 		data.put("state", this.roadMap.report()); 
 	
 		return data;
+	}
+
+
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		
+		this.observers.add(o);
+		
+		for(TrafficSimObserver obv : observers)
+			obv.onRegister(roadMap,eventList,time);
+		
+	}
+
+
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		this.observers.remove(o);
 	}
 }

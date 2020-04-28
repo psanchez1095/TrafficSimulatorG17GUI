@@ -177,6 +177,13 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 		return location;
 	}
 
+	public VehicleStatus getStatus() {
+		// TODO Auto-generated method stub
+		return this.estado;
+	}
+
+	
+
 	
 
 }

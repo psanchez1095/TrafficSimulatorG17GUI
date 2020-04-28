@@ -1,6 +1,8 @@
 package simulator.model;
 
+import java.awt.RenderingHints;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -155,5 +157,32 @@ public class Junction extends SimulatedObject {
 		
 		return json;
 	}
+
+
+	public int getX() {
+		// TODO Auto-generated method stub
+		return this.x;
+	}
+
+
+	public int getY() {
+		// TODO Auto-generated method stub
+		return this.y;
+	}
+
+
+	public int getGreenLightIndex() {
+		// TODO Auto-generated method stub
+		return this.getGreenLightIndex();
+	}
+
+
+	public List<Road> getInRoads(){
+		// TODO Auto-generated method stub
+		return Collections.unmodifiableList(this.roadList);
+	}
+
+
+	
 
 }
