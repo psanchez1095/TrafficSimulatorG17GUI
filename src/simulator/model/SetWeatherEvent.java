@@ -35,6 +35,22 @@ public class SetWeatherEvent extends Event {
 				
 			}
 		}
+	
+	@Override
+	public String toString() {
+		
+		String cadena;
+		
+		cadena =  "Change Weather: [" ;
+		
+		for(int i = 0; i < weatherString.size(); i++) {
+			cadena += "(" + weatherString.get(i).getFirst() + "," + weatherString.get(i).getSecond() + ")";
+		}
+		
+		cadena += "]";
+		
+		return cadena;
+	}
 
 
 }

@@ -42,7 +42,11 @@ public class Controller {
 			}
 		}	
 	}
-	
+	public void run(int ticks) {
+		for(int i = 0; i < ticks; i++) {
+			traffic_simulator.advance();
+		}
+	}
 	public void run(int nTicks, OutputStream out) {
 		
 		JSONArray status = new JSONArray();
@@ -65,21 +69,27 @@ public class Controller {
 		
 	}
 	
-	private void reset(){
+	public void reset(){
 		this.traffic_simulator.reset();
 	}
 	
-	public void addObserver(TrafficSimObserver o){
-		this.traffic_simulator.addObserver(o);
+	//Metodos GUI
+	
+	public void addEvent(Event e) {
+		this.traffic_simulator.addEvent(e);
 	}
 	
 	private void removeObserver(TrafficSimObserver o) {
 		this.traffic_simulator.removeObserver(o);
 	}
 	
-	public void addEvent(Event e) {
-		this.traffic_simulator.addEvent(e);
+	public void addObserver(TrafficSimObserver o){
+		this.traffic_simulator.addObserver(o);
 	}
+	
+	
+	
+	
 	
 	
 }

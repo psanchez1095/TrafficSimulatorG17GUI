@@ -24,6 +24,10 @@ public class NewJunctionEvent extends Event {
 	void execute(RoadMap map) {
 		map.addJunction(new Junction(this._id, this.lightSwitchingStrat, this.dequeStrategy, this.x, this.y));
 	}
-
+	
+	@Override
+	public String toString() {
+		return "New Junction '" + _id + "'" ;
+	}
 
 }

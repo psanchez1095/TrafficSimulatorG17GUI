@@ -23,5 +23,10 @@ public class NewRoadEvent extends Event {
 
 	@Override
 	void execute(RoadMap map) {}
-
+	
+	@Override
+	public String toString() {
+		return "New Road '" + _id + "'" ;
+	}
 }
+	
