@@ -37,16 +37,17 @@ import simulator.enumerados.Weather;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
-	private Controller _ctrl;
-	private JButton bCargaFich,bChangeCO2,bChangeW,bPlay,bStop,bExit;
-	private boolean _stopped;
-	private RoadMap _map;
-	private int _time;
+	private Controller controller;
+	private RoadMap map;
+	private boolean parado;
+	private int time;
 	
-	public ControlPanel(Controller _ctrl) {
-		this._ctrl = _ctrl;
+	private JButton bCargaFich,bChangeCO2,bChangeW,bPlay,bStop,bExit;
+	
+	public ControlPanel(Controller control) {
+		this.controller = control;
 		this.setLayout(new GridLayout(0,2));
-		_ctrl.addObserver(this);
+		controller.addObserver(this);
 		initGUI();
 		setName("ControlPanel");
 	}
@@ -60,7 +61,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		this._time = time;
+		this.time = time;
 	}
 
 	@Override
@@ -78,8 +79,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		_map = map;
-		_time = time;
+		map = map;
+		time = time;
 	}
 
 	@Override
@@ -211,11 +212,11 @@ private void actionBotonCarga(JButton botonCarga) {
     	int returnValue = fileChooser.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 
-			_ctrl.reset();
+			controller.reset();
 			try {
 				
 
-				_ctrl.loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
+				controller.loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
 				
 				
 			} catch (FileNotFoundException e) {
@@ -252,12 +253,12 @@ private void actionBotonCambioClaseC02(JButton botonCambioClaseC02) {
         public void actionPerformed(ActionEvent ae) {
         	ChangeCO2ClassDialog dialog = new ChangeCO2ClassDialog((JFrame) SwingUtilities.getWindowAncestor(bChangeCO2));
         	
-        	int status = dialog.open(_map);
+        	boolean status = dialog.open(map);
         	
-        	if(status == 1) {
+        	if(status) {
         		List<Pair<String, Integer>> cs = new ArrayList<>();
         		cs.add(new Pair<String,Integer>(dialog.getVehicle().getId(),dialog.getContClass()));
-        		_ctrl.addEvent(new NewSetContClassEvent(_time + dialog.getTicks(),cs));
+        		controller.addEvent(new NewSetContClassEvent(time + dialog.getTicks(),cs));
         	}
         }
 	});
@@ -283,12 +284,19 @@ private void actionBotonCambioTiempo(JButton botonCambioTiempo) {
         public void actionPerformed(ActionEvent ae) {
         	ChangeWeatherDialog dialog = new ChangeWeatherDialog((JFrame) SwingUtilities.getWindowAncestor(bChangeCO2));
         	
-        	int status = dialog.open(_map);
+        	boolean status = dialog.open(map);
         	
-        	if(status == 1) {
-        		List<Pair<String, Weather>> cs = new ArrayList<>();
-        		cs.add(new Pair<String,Weather>(dialog.getRoad().getId(),dialog.getWeather()));
-        		_ctrl.addEvent(new SetWeatherEvent(_time + dialog.getTicks(),cs));
+        	// Si se ha pulsado ok debes agregar un
+        	//evento al simulador para cambiar la clase de contaminación de vehículo V a C después de N
+        	//ticks desde el momento actual
+        	
+        	if(status) {
+        		
+        		List<Pair<String, Weather>> stringWeather = new ArrayList<>();
+        		
+        		stringWeather.add(new Pair<String,Weather>(dialog.getRoad().getId(),dialog.getWeather()));
+        		controller.addEvent(new SetWeatherEvent(time + dialog.getTicks(),stringWeather));
+        		
         	}
         }
 	});
@@ -311,7 +319,7 @@ private void actionBotonPlay(JButton botonPlay,JSpinner spinner) {
 	botonPlay.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-        	_stopped = false;
+        	parado = false;
         	enableToolBar(false);
         	run_sim((int)spinner.getValue());
         }
@@ -364,11 +372,11 @@ private void actionBotonExit(JButton botonExit) {
         			   JOptionPane.YES_NO_OPTION,
         			   JOptionPane.QUESTION_MESSAGE,
         			   null,    
-        			   new Object[] { "No", "Yes"},   
+        			   new Object[] { "Yes", "No"},   
         			   null);
         	
         	
-        	if(seleccion == 1) {
+        	if(seleccion == 0) {
         		System.exit(0);
         	}
         }
@@ -379,12 +387,12 @@ private void actionBotonExit(JButton botonExit) {
 
 
 private void run_sim( int n ) {
-	if ( n > 0 && ! _stopped ) {
+	if ( n > 0 && ! parado ) {
 		try {
-		_ctrl .run(1);
+			controller .run(1);
 		} catch (Exception e ) {
 		// TODO show error message
-		_stopped = true ;
+			parado = true ;
 		return ;
 		}
 		SwingUtilities.invokeLater( new Runnable() {
@@ -395,7 +403,7 @@ private void run_sim( int n ) {
 		});
 	} else {
 		enableToolBar( true );
-		_stopped = true ;
+		parado = true ;
 	}
 }
 	
@@ -409,7 +417,7 @@ private void enableToolBar(boolean enable) {
 }
 
 private void stop() {
-	_stopped = true ;
+	parado = true ;
 	enableToolBar(true);
 }
 
