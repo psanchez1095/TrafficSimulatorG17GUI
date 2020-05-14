@@ -17,17 +17,13 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
     private String[] columnas;
 
     public EventsTableModel(Controller ctrl){
-        super();
-        eventsTable  = null;
+       
+    	eventsTable = null;
         columnas = new String[]{"Time", "Description"};
         controller = ctrl;
         controller.addObserver(this);
+        
     }
-    	
-	public void setEventsList(List<Event> events) {
-		eventsTable = events;
-		fireTableDataChanged();
-	}
 	
 	@Override
 	public int getColumnCount() {
@@ -36,26 +32,22 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public int getRowCount() {
-		return eventsTable == null ? 0 : eventsTable.size();
+		
+		if(eventsTable == null) return 0;
+		else return eventsTable.size();
+		
 	}
 
 	@Override
 	public Object getValueAt(int indexRow, int indexCol) {
 		
-		Object object = null;
+		Event event = eventsTable.get(indexRow);
 		
-		switch (indexCol) {
-		
-		case 0:
-			object = eventsTable.get(indexRow).getTime();
-			break;
-			
-		case 1:
-			object = eventsTable.get(indexCol).toString();
-			break;
-		}
-		
-		return object;
+       if(indexCol==0) return event.getTime();
+            
+       else if(indexCol==1)return event.toString();
+        
+       else  return null;
 		
 		
 	}
@@ -66,8 +58,8 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
+		eventsTable = events;
+		this.fireTableDataChanged();
 	}
 
 	@Override
@@ -81,32 +73,37 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 			
 		}
 		
-		setEventsList(eventoX);
-
+		eventsTable = events;
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		setEventsList(events);
+		eventsTable = events;
+		this.fireTableDataChanged();
 
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
+		eventsTable = events;
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
+		eventsTable = events;
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onError(String err) {
 		// TODO Auto-generated method stub
 
+	}
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
 	}
 
 }

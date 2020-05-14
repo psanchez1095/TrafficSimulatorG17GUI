@@ -50,23 +50,28 @@ public class Controller {
 	public void run(int nTicks, OutputStream out) {
 		
 		JSONArray status = new JSONArray();
-		PrintStream print = /*(out==null)? null :*/ new PrintStream(out);
+		Object print;
+		if(out == null) print = null;
+		else print = new PrintStream(out);
 		JSONObject status1 = new JSONObject();
 		
-		print.println("{");
-		print.println("  \"states\": [");
+		
 		for(int i=0;i<nTicks;i++) {
 
 			this.traffic_simulator.advance();
-			//status.put(i, this.traffic_simulator.report());
-			print.println(this.traffic_simulator.report()+ ",");
+			status.put(this.traffic_simulator.report());
+			
 			
 		}
-		 print.println("]}");
-		//status1.put("states", status);
-		//print.println(status1);
-		
-		
+
+			status1.put("states", status);
+			
+			if(out == null) {
+				System.out.println(status1);
+			}else {
+				PrintStream writer = new PrintStream(out);
+				writer.println(status1.toString());
+			}
 	}
 	
 	public void reset(){

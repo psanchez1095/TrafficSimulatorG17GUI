@@ -42,14 +42,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private boolean parado;
 	private int time;
 	
-	private JButton bCargaFich,bChangeCO2,bChangeW,bPlay,bStop,bExit;
+	private JButton botonContClass,botonTiempo,botonCarga,botonPlay,botonStop,botonSalir;
 	
 	public ControlPanel(Controller control) {
+		
 		this.controller = control;
-		this.setLayout(new GridLayout(0,2));
 		controller.addObserver(this);
 		initGUI();
-		setName("ControlPanel");
+		
 	}
 
 	@Override
@@ -71,16 +71,17 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
+	public void onReset(RoadMap mapp, List<Event> events, int timee) {
 		// TODO Auto-generated method stub
-
+		this.map = mapp;
+		this.time = timee;
 	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
+	public void onRegister(RoadMap mapp, List<Event> events, int timee) {
 		// TODO Auto-generated method stub
-		map = map;
-		time = time;
+		this.map = mapp;
+		this.time = timee;
 	}
 
 	@Override
@@ -91,16 +92,21 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
 private void initGUI() {
 		
+		this.setName("ControlPanel");
+		this.setLayout(new GridLayout(0,2));
+		
 		
 		JPanel mainP = new JPanel();
 		mainP.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+		
 		//Boton Carga del fichero de eventos
-		initBotonCarga(bCargaFich);
-		actionBotonCarga(bCargaFich);
+		this.botonCarga = new JButton();
+		JDialog dialog = new JDialog();
+		initBotonCarga(botonCarga);
+		actionBotonCarga(botonCarga,dialog);
 		
 		//Añadimos el boton al Jpanel Principal
-		mainP.add(bCargaFich);
+		mainP.add(botonCarga);
 		
 		JSeparator sep = new JSeparator(SwingConstants.VERTICAL);
 		sep.setPreferredSize(new Dimension(2,50));
@@ -113,18 +119,20 @@ private void initGUI() {
 		pChange.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		//Boton Cambio de la clase de contaminación de un vehículo
-		initBotonCambioClaseC02(bChangeCO2);
-		actionBotonCambioClaseC02(bChangeCO2);
+		this.botonContClass = new JButton();
+		initBotonCambioClaseC02(botonContClass);
+		actionBotonCambioClaseC02(botonContClass,dialog);
 		
 		//Añadimos el boton al Jpanel de Cambios(CO2 Y TIEMPO)
-		pChange.add(bChangeCO2);
+		pChange.add(botonContClass);
 		
 		//Boton Cambio de tiempo de una carretera
-		initBotonCambioTiempo(bChangeW);
-		actionBotonCambioTiempo(bChangeW);
+		this.botonTiempo = new JButton();
+		initBotonCambioTiempo(botonTiempo);
+		actionBotonCambioTiempo(botonTiempo,dialog);
 		
 		//Añadimos el boton al Jpanel de Cambios(CO2 Y TIEMPO)
-		pChange.add(bChangeW);
+		pChange.add(botonTiempo);
 		
 		//Añadimos el JPanel de cambios al panel principal
 		mainP.add(pChange);
@@ -149,16 +157,18 @@ private void initGUI() {
 		spTicks.setPreferredSize(new Dimension(60,40));
 		
 		//Boton Play
-		initBotonPlay(bPlay);
-		actionBotonPlay(bPlay,spTicks);
+		this.botonPlay = new JButton();
+		initBotonPlay(botonPlay);
+		actionBotonPlay(botonPlay,spTicks);
 		
 		//Boton Stop
-		initBotonStop(bPlay);
-		actionBotonStop(bPlay);
+		this.botonStop = new JButton();
+		initBotonStop(botonStop);
+		actionBotonStop(botonStop);
 		
 		//Añadimos el JPanel de PlayStop tanto el boton play como el boton stop	
-		pBPlayStop.add(bStop);
-		pBPlayStop.add(bStop);
+		pBPlayStop.add(botonPlay);
+		pBPlayStop.add(botonStop);
 		
 		//Añadimos el JPanel de PlayStop al panel principal
 		mainP.add(pBPlayStop);
@@ -180,18 +190,18 @@ private void initGUI() {
 		pExit.add(sep3);
 		
 		//Boton Exit
-		initBotonExit(bExit);
-		actionBotonExit(bExit);
+		this.botonSalir = new JButton();
+		initBotonExit(botonSalir);
+		actionBotonExit(botonSalir);
 		
 		//Añadimos el panelExit al panel principal
-		pExit.add(bExit);
+		pExit.add(botonSalir);
 		
 		add(pExit);
 	}
 //Inicializamos boton carga fichero
 private void initBotonCarga(JButton botonCarga) {
 	
-	botonCarga = new JButton();
 	botonCarga.setIcon(new ImageIcon("resources/icons/open.png"));
 	botonCarga.setToolTipText("Open a file");
 	
@@ -199,13 +209,13 @@ private void initBotonCarga(JButton botonCarga) {
 			
 }
 //Action boton carga fichero
-private void actionBotonCarga(JButton botonCarga) {
+private void actionBotonCarga(JButton botonCarga,JDialog dialog) {
 	
 	botonCarga.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent ae) {
 
-    	JDialog dialog = new JDialog();
+    	
     	dialog.setTitle("Open");
     	dialog.setBounds(getParent().getWidth(), getParent().getHeight(), 500, 300);
     	JFileChooser fileChooser = new JFileChooser("resources/examples");
@@ -238,7 +248,6 @@ private void actionBotonCarga(JButton botonCarga) {
 //Inicializamos boton cambia clase CO2 de un vehiculo
 private void initBotonCambioClaseC02(JButton botonCambioClaseC02) {
 	
-	botonCambioClaseC02 = new JButton();
 	botonCambioClaseC02.setIcon(new ImageIcon("resources/icons/co2class.png"));
 	botonCambioClaseC02.setToolTipText("Change CO2 class of a Vehicle");
 	
@@ -246,12 +255,12 @@ private void initBotonCambioClaseC02(JButton botonCambioClaseC02) {
 			
 }
 //Action boton carga fichero
-private void actionBotonCambioClaseC02(JButton botonCambioClaseC02) {
+private void actionBotonCambioClaseC02(JButton botonCambioClaseC02,JDialog dialog) {
 	
-	bChangeCO2.addActionListener(new ActionListener() {
+	botonCambioClaseC02.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-        	ChangeCO2ClassDialog dialog = new ChangeCO2ClassDialog((JFrame) SwingUtilities.getWindowAncestor(bChangeCO2));
+        	ChangeCO2ClassDialog dialog = new ChangeCO2ClassDialog((JFrame) SwingUtilities.getWindowAncestor(botonCambioClaseC02));
         	
         	boolean status = dialog.open(map);
         	
@@ -267,28 +276,24 @@ private void actionBotonCambioClaseC02(JButton botonCambioClaseC02) {
 }
 
 //Inicializamos boton cambia clase CO2 de un vehiculo
-private void initBotonCambioTiempo(JButton botonCambioTiempo) {
+private void initBotonCambioTiempo(JButton botonTiempo) {
 	
-	botonCambioTiempo = new JButton();
-	botonCambioTiempo.setIcon(new ImageIcon("resources/icons/weather.png"));
-	botonCambioTiempo.setToolTipText("Change Weather of a Road");
+	botonTiempo.setIcon(new ImageIcon("resources/icons/weather.png"));
+	botonTiempo.setToolTipText("Change Weather of a Road");
 	
 	
 			
 }
 //Action boton carga fichero
-private void actionBotonCambioTiempo(JButton botonCambioTiempo) {
+private void actionBotonCambioTiempo(JButton botonTiempo,JDialog dialog) {
 	
-	botonCambioTiempo.addActionListener(new ActionListener() {
+	botonTiempo.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-        	ChangeWeatherDialog dialog = new ChangeWeatherDialog((JFrame) SwingUtilities.getWindowAncestor(bChangeCO2));
+        	ChangeWeatherDialog dialog = new ChangeWeatherDialog((JFrame) SwingUtilities.getWindowAncestor(botonTiempo));
         	
         	boolean status = dialog.open(map);
         	
-        	// Si se ha pulsado ok debes agregar un
-        	//evento al simulador para cambiar la clase de contaminación de vehículo V a C después de N
-        	//ticks desde el momento actual
         	
         	if(status) {
         		
@@ -307,21 +312,27 @@ private void actionBotonCambioTiempo(JButton botonCambioTiempo) {
 //Inicializamos boton cambia clase CO2 de un vehiculo
 private void initBotonPlay(JButton botonPlay) {
 	
-	botonPlay = new JButton();
 	botonPlay.setIcon(new ImageIcon("resources/icons/run.png"));
 	botonPlay.setToolTipText("Run the simulator");
 	
 			
 }
 //Action boton carga fichero
-private void actionBotonPlay(JButton botonPlay,JSpinner spinner) {
+private void actionBotonPlay(JButton botonPlay,JSpinner nTicksSpinner) {
 	
 	botonPlay.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
+        	
         	parado = false;
-        	enableToolBar(false);
-        	run_sim((int)spinner.getValue());
+        	
+        	botonCarga.setEnabled(false);
+    		botonContClass.setEnabled(false);
+    		botonTiempo.setEnabled(false);
+    		botonPlay.setEnabled(false);;
+    		
+    		executeRun((int)nTicksSpinner.getValue());
+    		
         }
 	});
          
@@ -330,7 +341,6 @@ private void actionBotonPlay(JButton botonPlay,JSpinner spinner) {
 //Inicializamos boton cambia clase CO2 de un vehiculo
 private void initBotonStop(JButton botonStop) {
 	
-	botonStop = new JButton();
 	botonStop.setIcon(new ImageIcon("resources/icons/stop.png"));
 	botonStop.setToolTipText("Stop the simulator");
 	
@@ -351,34 +361,26 @@ private void actionBotonStop(JButton botonStop) {
 }
 
 //Inicializamos boton cambia clase CO2 de un vehiculo
-private void initBotonExit(JButton botonExit) {
+private void initBotonExit(JButton botonSalir) {
 	
-	botonExit = new JButton();
-	botonExit.setIcon(new ImageIcon("resources/icons/exit.png"));
-	botonExit.setToolTipText("Exit the simulator");
+	botonSalir.setIcon(new ImageIcon("resources/icons/exit.png"));
+	botonSalir.setToolTipText("Exit the simulator");
 	
 	
 			
 }
 //Action boton carga fichero
-private void actionBotonExit(JButton botonExit) {
+private void actionBotonExit(JButton botonSalir) {
 	
-	botonExit.addActionListener(new ActionListener() {
+	botonSalir.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-        	int seleccion = JOptionPane.showOptionDialog( (JFrame) SwingUtilities.getWindowAncestor(bExit),
-        			   "Are you sure you want to quit?", 
-        			   "Quit",
-        			   JOptionPane.YES_NO_OPTION,
-        			   JOptionPane.QUESTION_MESSAGE,
-        			   null,    
-        			   new Object[] { "Yes", "No"},   
-        			   null);
-        	
+        	int seleccion = JOptionPane.showOptionDialog( (JFrame) SwingUtilities.getWindowAncestor(botonSalir),"Are you sure you want to quit?", "Quit", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,    new Object[] { "Yes", "No"},   null);
         	
         	if(seleccion == 0) {
         		System.exit(0);
         	}
+        	
         }
 	});
 
@@ -386,39 +388,45 @@ private void actionBotonExit(JButton botonExit) {
 }
 
 
-private void run_sim( int n ) {
-	if ( n > 0 && ! parado ) {
+private void executeRun( int nTicks ){
+	
+	if (  !parado &&  nTicks > 0 ) {
 		try {
-			controller .run(1);
+		this.controller .run(1);
 		} catch (Exception e ) {
 		// TODO show error message
 			parado = true ;
 		return ;
 		}
-		SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() { // Volvemos a llamar a run como un nuevo Runnable hasta que nticks = 0 o parado
 			@Override
 			public void run() {
-			run_sim( n - 1);
+				executeRun( nTicks - 1);
 			}
 		});
-	} else {
-		enableToolBar( true );
+	} 
+	else{
+		
 		parado = true ;
+		
+		botonCarga.setEnabled(true);
+		botonContClass.setEnabled(true);
+		botonTiempo.setEnabled(true);
+		botonPlay.setEnabled(true);;
+		
+		
+		
 	}
 }
 	
 
-private void enableToolBar(boolean enable) {
-	
-	bCargaFich.setEnabled(enable);
-	bChangeCO2.setEnabled(enable);
-	bChangeW.setEnabled(enable);
-	bPlay.setEnabled(enable);
-}
 
 private void stop() {
 	parado = true ;
-	enableToolBar(true);
+	botonCarga.setEnabled(true);
+	botonContClass.setEnabled(true);
+	botonTiempo.setEnabled(true);
+	botonPlay.setEnabled(true);;
 }
 
 }

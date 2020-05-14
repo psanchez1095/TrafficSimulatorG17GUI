@@ -148,7 +148,7 @@ public class ChangeWeatherDialog extends JDialog {
 		return (Weather) weatherComboBox.getSelectedItem();
 	}
 	
-	protected boolean open(RoadMap map) {
+	boolean open(RoadMap map) {
 		
 		this.map = map;
 		

@@ -26,6 +26,16 @@ public class MainWindow extends JFrame {
 	initGUI();
 	}
 	
+	private JPanel createViewPanel(JComponent componenteVista) {
+		
+		JPanel panel = new JPanel( new BorderLayout() );
+		
+		panel.add(new JScrollPane(componenteVista));
+		
+		return panel;
+		
+	}
+	
 	private void initGUI() {
 	JPanel mainPanel = new JPanel(new BorderLayout());
 	this.setContentPane(mainPanel);
@@ -39,36 +49,39 @@ public class MainWindow extends JFrame {
 	JPanel mapsPanel = new JPanel();
 	mapsPanel.setLayout(new BoxLayout(mapsPanel, BoxLayout.Y_AXIS));
 	viewsPanel.add(mapsPanel);
-	JPanel eventsView = createViewPanel( new JTable( new EventsTableModel( _ctrl )), "Events" );
+	
+	//Tabla Eventos
+	JPanel eventsView = createViewPanel( new JTable( new EventsTableModel( _ctrl )) );
 	eventsView .setPreferredSize( new Dimension(500, 200));
 	eventsView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Events"));
 	tablesPanel .add( eventsView );
 	
-	
-	JPanel vehiclesView = createViewPanel( new JTable( new VehiclesTableModel( _ctrl )), "Vehicles" );
+	//Tabla Vehiculos 
+	JPanel vehiclesView = createViewPanel( new JTable( new VehiclesTableModel( _ctrl )));
 	vehiclesView .setPreferredSize( new Dimension(500, 200));
 	vehiclesView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Vehicles"));
 	tablesPanel .add( vehiclesView );
 	
-	JPanel roadsView = createViewPanel( new JTable( new RoadsTableModel( _ctrl )), "Roads" );
+	//Tabla Carreteras
+	JPanel roadsView = createViewPanel( new JTable( new RoadsTableModel( _ctrl )));
 	roadsView .setPreferredSize( new Dimension(500, 200));
 	roadsView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Roads"));
 	tablesPanel .add( roadsView );
 	
 	
-	JPanel junctionsView = createViewPanel( new JTable( new JunctionsTableModel( _ctrl )), "Junctions" );
+	JPanel junctionsView = createViewPanel( new JTable( new JunctionsTableModel( _ctrl )) );
 	junctionsView .setPreferredSize( new Dimension(500, 200));
 	junctionsView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Junctions"));
 	tablesPanel .add( junctionsView );
 			
 	
 	// maps
-	JPanel mapView = createViewPanel( new MapComponent( _ctrl ), "Map" );
+	JPanel mapView = createViewPanel( new MapComponent( _ctrl ));
 	mapView .setPreferredSize( new Dimension(500, 400));
 	mapView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Map"));
 	mapsPanel .add( mapView );
 	
-	JPanel mapByRoadView = createViewPanel( new MapByRoadComponent( _ctrl ), "Map by Road" );
+	JPanel mapByRoadView = createViewPanel( new MapByRoadComponent( _ctrl ) );
 	mapByRoadView .setPreferredSize( new Dimension(500, 400));
 	mapByRoadView.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Map by Road"));
 	mapsPanel .add( mapByRoadView );
@@ -80,11 +93,6 @@ public class MainWindow extends JFrame {
 	this.pack();
 	this.setVisible(true);
 	}
-	private JPanel createViewPanel(JComponent c, String title) {
-	JPanel p = new JPanel( new BorderLayout() );
-	// TODO add a framed border to p with title
-	p.add(new JScrollPane(c));
-	return p;
-	}
+	
 
 }

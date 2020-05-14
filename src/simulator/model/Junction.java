@@ -51,6 +51,16 @@ public class Junction extends SimulatedObject {
 	}
 	
 
+	public List<List<Vehicle>> getListOfVehicleList() {
+		return listOfVehicleList;
+	}
+
+
+	public void setListOfVehicleList(List<List<Vehicle>> listOfVehicleList) {
+		this.listOfVehicleList = listOfVehicleList;
+	}
+
+
 	@Override
 	void advance(int time) {
 		

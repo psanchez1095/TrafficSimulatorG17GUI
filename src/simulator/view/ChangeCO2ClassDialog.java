@@ -44,8 +44,6 @@ public class ChangeCO2ClassDialog extends JDialog {
 	
 	private void initGUI() {
 
-		
-
 		setTitle("Change CO2 Class");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -81,8 +79,6 @@ public class ChangeCO2ClassDialog extends JDialog {
         JButton bCancel = new JButton("Cancel");
         JButton bOk = new JButton("OK");
         cbCO2 = new JComboBox<Integer> (contClass);
-        
-        
         
         panelCMain.add(tVehicle);
         
@@ -147,6 +143,7 @@ public class ChangeCO2ClassDialog extends JDialog {
 	}
 	
 	protected boolean open(RoadMap map) {
+		
 		this.map = map;
 		
 		for(Vehicle v : map.getVehicles()) {
@@ -154,6 +151,7 @@ public class ChangeCO2ClassDialog extends JDialog {
 	    }
 		
 		setVisible(true);
+		
 		return boolOK;
 		
 	}

@@ -182,6 +182,38 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 		return this.estado;
 	}
 
+	public List<Junction> getItinerario() {
+		return itinerario;
+	}
+
+	public void setItinerario(List<Junction> itinerario) {
+		this.itinerario = itinerario;
+	}
+
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+
+	public void setMaxSpeed(int maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+
+	public int getContaminacionTotal() {
+		return contaminacionTotal;
+	}
+
+	public void setContaminacionTotal(int contaminacionTotal) {
+		this.contaminacionTotal = contaminacionTotal;
+	}
+
+	public int getTotalRecorrido() {
+		return totalRecorrido;
+	}
+
+	public void setTotalRecorrido(int totalRecorrido) {
+		this.totalRecorrido = totalRecorrido;
+	}
+
 	
 
 	

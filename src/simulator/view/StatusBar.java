@@ -60,7 +60,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		// TODO Auto-generated method stub
 		this.mapRoad = map;
 		this.time = time;
-		timeLabel.setText(currentTime(time));
+		
 	}
 
 	@Override

@@ -1,10 +1,13 @@
 package simulator.launcher;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -32,6 +35,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -40,6 +44,7 @@ public class Main {
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
 	private static int _timeLimit = 0;
+	private static String _mainMode = null;
 	
 	public static void main(String[] args) {
 		try {
@@ -83,6 +88,7 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
+			parseMainModeOption(line);
 			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseTimeLimit(line);
@@ -111,7 +117,8 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg().desc("Time limit").build());
-
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("Program mode, GUI or console").build());
+		
 		return cmdLineOptions;
 		
 	}
@@ -125,10 +132,17 @@ public class Main {
 		}
 		
 	}
+	private static void parseMainModeOption(CommandLine line) {
+		_mainMode = line.getOptionValue("m");
+		if (_mainMode == null) {
+			_mainMode = "gui";
+		}
+	}
+	
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
+		if (_inFile == null && _mainMode.equals("console"))  {
 			throw new ParseException("An events file is missing");
 		}
 	}
@@ -149,7 +163,12 @@ public class Main {
 		
 		Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
 		
-		controller.loadEvents(new FileInputStream(_inFile));
+
+		
+		if(_inFile != null) {
+			controller.loadEvents(new FileInputStream(_inFile));
+		}
+		
 		if(_outFile == null) {
 			controller.run(_timeLimit, null);
 		}else {
@@ -162,7 +181,37 @@ public class Main {
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
+		if(_mainMode.equals("gui")) {
+			startGUIMode();
+		}else {
+			startBatchMode();
+		}
 		startBatchMode();
+	}
+	
+	// Metodos GUI
+	
+private static void startGUIMode() throws FileNotFoundException {
+		
+		Controller ctrl = new Controller(new TrafficSimulator(),_eventsFactory);
+		
+		
+		
+		SwingUtilities.invokeLater( new Runnable() {
+			@ Override
+			public void run() {
+			new MainWindow(ctrl);
+			if(_inFile != null) {
+				try {
+					ctrl.loadEvents(new FileInputStream(_inFile));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			}
+		});
+		
 	}
 	
 	
