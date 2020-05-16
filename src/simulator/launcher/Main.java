@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,26 +193,26 @@ public class Main {
 	// Metodos GUI
 	
 private static void startGUIMode() throws FileNotFoundException {
-		
-		Controller ctrl = new Controller(new TrafficSimulator(),_eventsFactory);
-		
-		
-		
-		SwingUtilities.invokeLater( new Runnable() {
-			@ Override
-			public void run() {
-			new MainWindow(ctrl);
-			if(_inFile != null) {
-				try {
-					ctrl.loadEvents(new FileInputStream(_inFile));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	
+
+	Controller ctrl = new Controller(new TrafficSimulator(),_eventsFactory);
+	
+	
+	
+	SwingUtilities.invokeLater( new Runnable() {
+		@ Override
+		public void run() {
+		new MainWindow(ctrl);
+		if(_inFile != null) {
+			try {
+				ctrl.loadEvents(new FileInputStream(_inFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			}
-		});
-		
+		}
+		}
+	});
 	}
 	
 	

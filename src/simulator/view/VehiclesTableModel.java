@@ -100,6 +100,12 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	}
 		return status;
 	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
+	
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
@@ -123,8 +129,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		listVehiclesTable = map.getVehicles();
-		this.fireTableDataChanged();
+		
 
 	}
 

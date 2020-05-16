@@ -95,110 +95,73 @@ private void initGUI() {
 		this.setName("ControlPanel");
 		this.setLayout(new GridLayout(0,2));
 		
-		
 		JPanel mainP = new JPanel();
 		mainP.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		//Boton Carga del fichero de eventos
 		this.botonCarga = new JButton();
 		JDialog dialog = new JDialog();
+		
 		initBotonCarga(botonCarga);
 		actionBotonCarga(botonCarga,dialog);
 		
-		//Añadimos el boton al Jpanel Principal
 		mainP.add(botonCarga);
 		
-		JSeparator sep = new JSeparator(SwingConstants.VERTICAL);
-		sep.setPreferredSize(new Dimension(2,50));
-		sep.setForeground(Color.black);
-		sep.setBackground(Color.black);
-		mainP.add(sep);
-		
-		//Panel Botones de Changeco2 y ChangeWeather
 		JPanel pChange = new JPanel(); 
 		pChange.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
-		//Boton Cambio de la clase de contaminación de un vehículo
 		this.botonContClass = new JButton();
 		initBotonCambioClaseC02(botonContClass);
 		actionBotonCambioClaseC02(botonContClass,dialog);
 		
-		//Añadimos el boton al Jpanel de Cambios(CO2 Y TIEMPO)
 		pChange.add(botonContClass);
 		
-		//Boton Cambio de tiempo de una carretera
 		this.botonTiempo = new JButton();
 		initBotonCambioTiempo(botonTiempo);
 		actionBotonCambioTiempo(botonTiempo,dialog);
 		
-		//Añadimos el boton al Jpanel de Cambios(CO2 Y TIEMPO)
 		pChange.add(botonTiempo);
 		
-		//Añadimos el JPanel de cambios al panel principal
 		mainP.add(pChange);
 		
-		JSeparator sep2 = new JSeparator(SwingConstants.VERTICAL);
-		sep2.setPreferredSize(new Dimension(3,50));
-		sep2.setForeground(Color.black);
-		sep2.setBackground(Color.black);
-		mainP.add(sep2);
-		
-		
-		//Panel de botones play/stop (instanciamos y definimos la ubicacion)
-		JPanel pBPlayStop = new JPanel();
-		pBPlayStop.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-		
-		
-		//Spinner de ticks
 		JLabel tTicks = new JLabel("Ticks: ");
 		JSpinner spTicks = new JSpinner();
 		SpinnerModel model =   new SpinnerNumberModel(10, 1, 1000, 1);
 		spTicks.setModel(model);
-		spTicks.setPreferredSize(new Dimension(60,40));
+		spTicks.setPreferredSize(new Dimension(80,30));
 		
-		//Boton Play
+		JPanel pBPlayStop = new JPanel();
+		pBPlayStop.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));   
+		
 		this.botonPlay = new JButton();
 		initBotonPlay(botonPlay);
 		actionBotonPlay(botonPlay,spTicks);
 		
-		//Boton Stop
 		this.botonStop = new JButton();
 		initBotonStop(botonStop);
 		actionBotonStop(botonStop);
 		
-		//Añadimos el JPanel de PlayStop tanto el boton play como el boton stop	
 		pBPlayStop.add(botonPlay);
 		pBPlayStop.add(botonStop);
 		
-		//Añadimos el JPanel de PlayStop al panel principal
 		mainP.add(pBPlayStop);
 		
-		//Añadimos el Spinner de Tics al panel principal
 		mainP.add(tTicks);
 		mainP.add(spTicks);
-		add(mainP);
+		this.add(mainP);
 		
-		//Instanciamos el botón exit y definimos su ubicación
+		
 		JPanel pExit = new JPanel();
 		pExit.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		JSeparator sep3 = new JSeparator(SwingConstants.VERTICAL);
-		sep3.setPreferredSize(new Dimension (3,50));
-		sep3.setBackground(Color.black);
-		sep3.setForeground(Color.black);
-		
-		pExit.add(sep3);
-		
-		//Boton Exit
 		this.botonSalir = new JButton();
 		initBotonExit(botonSalir);
 		actionBotonExit(botonSalir);
 		
-		//Añadimos el panelExit al panel principal
 		pExit.add(botonSalir);
 		
-		add(pExit);
+		this.add(pExit);
 	}
+
 //Inicializamos boton carga fichero
 private void initBotonCarga(JButton botonCarga) {
 	
@@ -217,7 +180,7 @@ private void actionBotonCarga(JButton botonCarga,JDialog dialog) {
 
     	
     	dialog.setTitle("Open");
-    	dialog.setBounds(getParent().getWidth(), getParent().getHeight(), 500, 300);
+    	dialog.setBounds(getParent().getWidth(), getParent().getHeight(), 800, 800);
     	JFileChooser fileChooser = new JFileChooser("resources/examples");
     	int returnValue = fileChooser.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -225,7 +188,7 @@ private void actionBotonCarga(JButton botonCarga,JDialog dialog) {
 			controller.reset();
 			try {
 				
-
+				
 				controller.loadEvents(new FileInputStream(fileChooser.getSelectedFile()));
 				
 				
@@ -330,8 +293,8 @@ private void actionBotonPlay(JButton botonPlay,JSpinner nTicksSpinner) {
     		botonContClass.setEnabled(false);
     		botonTiempo.setEnabled(false);
     		botonPlay.setEnabled(false);;
-    		
-    		executeRun((int)nTicksSpinner.getValue());
+    		for(int i =(int)nTicksSpinner.getValue() ; i >= 0 ;i--)
+    		executeRun(i);
     		
         }
 	});
@@ -390,23 +353,25 @@ private void actionBotonExit(JButton botonSalir) {
 
 private void executeRun( int nTicks ){
 	
+	
 	if (  !parado &&  nTicks > 0 ) {
 		try {
 		this.controller .run(1);
 		} catch (Exception e ) {
-		// TODO show error message
-			parado = true ;
+		JOptionPane.showMessageDialog(this.getParent(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		parado = true ;
 		return ;
 		}
-		SwingUtilities.invokeLater( new Runnable() { // Volvemos a llamar a run como un nuevo Runnable hasta que nticks = 0 o parado
+		/*SwingUtilities.invokeLater( new Runnable() { // Volvemos a llamar a run como un nuevo Runnable hasta que nticks = 0 o parado
 			@Override
 			public void run() {
 				executeRun( nTicks - 1);
+				
 			}
-		});
+		});*/
 	} 
 	else{
-		
+		System.out.print("PareDefinitivamente");
 		parado = true ;
 		
 		botonCarga.setEnabled(true);

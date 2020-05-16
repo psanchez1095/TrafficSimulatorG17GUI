@@ -30,6 +30,7 @@ public class Controller {
 	
 	public void loadEvents(InputStream in) {
 		
+		
 		JSONObject jo = new JSONObject(new JSONTokener(in));	
 		
 		if(!jo.has("events")) {
@@ -37,12 +38,14 @@ public class Controller {
 		}
 		else {
 			JSONArray arrayEv = jo.getJSONArray("events");
+			System.out.print(arrayEv.length());
 			for(int i= 0; i < arrayEv.length() ; i++) {
 			this.traffic_simulator.addEvent(this.events_factory.createInstance(arrayEv.getJSONObject(i)));
 			}
 		}	
 	}
 	public void run(int ticks) {
+
 		for(int i = 0; i < ticks; i++) {
 			traffic_simulator.advance();
 		}
@@ -50,9 +53,6 @@ public class Controller {
 	public void run(int nTicks, OutputStream out) {
 		
 		JSONArray status = new JSONArray();
-		Object print;
-		if(out == null) print = null;
-		else print = new PrintStream(out);
 		JSONObject status1 = new JSONObject();
 		
 		

@@ -70,11 +70,15 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 		Graphics2D graphicsActual = (Graphics2D) graphics;
 		graphicsActual.setBackground(COLOR_WHITE);
 		
+		
+		System.out.print("RoadsPaintComponent"+this.map.getRoads().size()+"!!!!!");
 		if (map == null || map.getRoads().size() == 0){
-			graphicsActual.setColor(Color.red);
-			graphicsActual.drawString("No map yet!", getWidth() / 2 - 50, getHeight() / 2);
+			graphicsActual.setColor(Color.black);
+			graphicsActual.drawString("Waiting Map!", getWidth() / 2 - 50, getHeight() / 2);
 		} 
-		else drawingMapRoad(graphicsActual);
+		else {drawingMapRoad(graphicsActual);
+		System.out.print("DIBUJO");
+		}
 		
 		
 		

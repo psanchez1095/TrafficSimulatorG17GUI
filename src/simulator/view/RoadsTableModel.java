@@ -73,6 +73,12 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 		return referenteRoad;
 		
 	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
+	
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
@@ -97,8 +103,6 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		
-		listRoadsTable = map.getRoads();
-		this.fireTableDataChanged();
 
 	}
 

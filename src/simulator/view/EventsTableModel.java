@@ -21,7 +21,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
     	eventsTable = null;
         columnas = new String[]{"Time", "Description"};
         controller = ctrl;
-        controller.addObserver(this);
+        ctrl.addObserver(this);
         
     }
 	
@@ -36,6 +36,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		if(eventsTable == null) return 0;
 		else return eventsTable.size();
 		
+		
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
             
        else if(indexCol==1)return event.toString();
         
-       else  return null;
+       else return null;
 		
 		
 	}
@@ -58,8 +59,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		eventsTable = events;
-		this.fireTableDataChanged();
+		
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 			
 		}
 		
-		eventsTable = events;
+		eventsTable = eventoX;
 		this.fireTableDataChanged();
 	}
 
@@ -86,14 +86,12 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		eventsTable = events;
-		this.fireTableDataChanged();
+		
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		eventsTable = events;
-		this.fireTableDataChanged();
+		
 	}
 
 	@Override
