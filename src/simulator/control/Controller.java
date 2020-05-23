@@ -15,21 +15,22 @@ public class Controller {
 	private TrafficSimulator traffic_simulator;
 	
 	public  Controller(TrafficSimulator sim,Factory<Event> factoria) {
+		
 		if(sim == null) {
 			throw new IllegalArgumentException(" El simulador tiene valor NULL");
 		}
 		else if (factoria == null)  {
 			throw new IllegalArgumentException( "La factoria de eventos tiene valor NULL");
 		}
+		
 		else {
 		this.events_factory = factoria;
 		this.traffic_simulator = sim;
 		}
-
+		
 	}
 	
 	public void loadEvents(InputStream in) {
-		
 		
 		JSONObject jo = new JSONObject(new JSONTokener(in));	
 		
@@ -38,32 +39,23 @@ public class Controller {
 		}
 		else {
 			JSONArray arrayEv = jo.getJSONArray("events");
-			System.out.print(arrayEv.length());
 			for(int i= 0; i < arrayEv.length() ; i++) {
 			this.traffic_simulator.addEvent(this.events_factory.createInstance(arrayEv.getJSONObject(i)));
 			}
 		}	
 	}
-	public void run(int ticks) {
-
-		for(int i = 0; i < ticks; i++) {
-			traffic_simulator.advance();
-		}
-	}
+	
 	public void run(int nTicks, OutputStream out) {
 		
-		JSONArray status = new JSONArray();
+		/*JSONArray status = new JSONArray();
 		JSONObject status1 = new JSONObject();
 		
-		
 		for(int i=0;i<nTicks;i++) {
-
 			this.traffic_simulator.advance();
 			status.put(this.traffic_simulator.report());
-			
-			
+				
 		}
-
+	
 			status1.put("states", status);
 			
 			if(out == null) {
@@ -71,7 +63,12 @@ public class Controller {
 			}else {
 				PrintStream writer = new PrintStream(out);
 				writer.println(status1.toString());
-			}
+			}*/
+			
+	}
+	
+	public void run(int ticks) {
+		for(int i = 0; i < ticks; i++) traffic_simulator.advance();
 	}
 	
 	public void reset(){
@@ -79,7 +76,6 @@ public class Controller {
 	}
 	
 	//Metodos GUI
-	
 	public void addEvent(Event e) {
 		this.traffic_simulator.addEvent(e);
 	}

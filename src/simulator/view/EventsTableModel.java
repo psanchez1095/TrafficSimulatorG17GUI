@@ -2,7 +2,6 @@ package simulator.view;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -24,6 +23,19 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
         ctrl.addObserver(this);
         
     }
+    
+    @Override
+	public Object getValueAt(int indexRow, int indexCol) {
+		
+    	Event event = eventsTable.get(indexRow);
+		
+    		if(indexCol==0) return event.getTime();
+            
+    		else if(indexCol==1)return event.toString();
+        
+    		else return null;
+    		
+	}
 	
 	@Override
 	public int getColumnCount() {
@@ -36,30 +48,10 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		if(eventsTable == null) return 0;
 		else return eventsTable.size();
 		
-		
 	}
 
-	@Override
-	public Object getValueAt(int indexRow, int indexCol) {
-		
-		Event event = eventsTable.get(indexRow);
-		
-       if(indexCol==0) return event.getTime();
-            
-       else if(indexCol==1)return event.toString();
-        
-       else return null;
-		
-		
-	}
-	
 	public String getColumnName(int indice) { 
 		return columnas[indice]; 
-		}
-
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		
 	}
 
 	@Override
@@ -67,41 +59,26 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		
 		List<Event> eventoX = new ArrayList<>();
 		
-		for(Event e : events) {
+		for(Event e : events) if(e.getTime() > time)  eventoX.add(e);
 			
-			if(e.getTime() > time)  eventoX.add(e);
-			
-		}
-		
 		eventsTable = eventoX;
 		this.fireTableDataChanged();
+		
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		eventsTable = events;
 		this.fireTableDataChanged();
-
 	}
-
+	
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		
-	}
-
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		
-	}
-
+	public void onReset(RoadMap map, List<Event> events, int time) {}
 	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onRegister(RoadMap map, List<Event> events, int time) {}
 	@Override
-	public boolean isCellEditable(int row, int column) {
-		return false;
-	}
-
+	public void onError(String err) {}
+	
 }

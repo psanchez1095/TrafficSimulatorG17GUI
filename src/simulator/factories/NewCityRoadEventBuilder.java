@@ -7,7 +7,7 @@ import simulator.model.Event;
 import simulator.model.NewCityRoadEvent;
 import simulator.model.NewInterCityRoadEvent;
 
-public class NewCityRoadEventBuilder extends Builder<Event> {
+public class NewCityRoadEventBuilder extends NewRoadEventBuilder {
 	
 	protected Event newCityRoadEvent;
 	
@@ -23,6 +23,11 @@ public class NewCityRoadEventBuilder extends Builder<Event> {
 		
 		return newCityRoadEvent;
 		
+	}
+
+	@Override
+	Event createTheRoad() {
+		 return new NewCityRoadEvent(time, id, cruceOrigen, cruceDestino, length, contaminacionLimit, maxspeed, tiempo);
 	}
 	
 }

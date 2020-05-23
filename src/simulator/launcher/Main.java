@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +37,8 @@ import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
 import simulator.view.MainWindow;
 
+//Por defecto funciona directamente el mainGui
+
 public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
@@ -55,6 +56,52 @@ public class Main {
 		}
 
 	}
+	
+	private static void start(String[] args) throws IOException {
+		initFactories();
+		parseArgs(args);
+		if(_mainMode.equals("gui")) {
+			startGUIMode();
+		}else {
+			startBatchMode();
+		}
+		startBatchMode();
+	}
+	
+	private static void startBatchMode() throws IOException {
+		
+			Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
+		
+			if(_inFile != null) controller.loadEvents(new FileInputStream(_inFile));
+		
+			else if(_outFile == null) controller.run(_timeLimit, null);
+		
+			else controller.run(_timeLimit, new FileOutputStream(_outFile));
+		
+		}
+		
+	
+	private static void startGUIMode() throws FileNotFoundException {
+	
+		Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
+	
+		SwingUtilities.invokeLater( new Runnable() {
+			@ Override
+			public void run() {
+				
+				new MainWindow(controller);
+				
+				if(_inFile != null) {
+					try {
+						controller.loadEvents(new FileInputStream(_inFile));
+					}catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	
+		}
 	
 	private static void initFactories() {
 
@@ -159,62 +206,5 @@ public class Main {
 			_timeLimit = Integer.valueOf(line.getOptionValue("t"));
 		}
 	}
-
-	private static void startBatchMode() throws IOException {
-		
-		Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
-		
-
-		
-		if(_inFile != null) {
-			controller.loadEvents(new FileInputStream(_inFile));
-		}
-		
-		if(_outFile == null) {
-			controller.run(_timeLimit, null);
-		}else {
-			controller.run(_timeLimit, new FileOutputStream(_outFile));
-		}
-		
-		
-	}
-
-	private static void start(String[] args) throws IOException {
-		initFactories();
-		parseArgs(args);
-		if(_mainMode.equals("gui")) {
-			startGUIMode();
-		}else {
-			startBatchMode();
-		}
-		startBatchMode();
-	}
-	
-	// Metodos GUI
-	
-private static void startGUIMode() throws FileNotFoundException {
-	
-
-	Controller ctrl = new Controller(new TrafficSimulator(),_eventsFactory);
-	
-	
-	
-	SwingUtilities.invokeLater( new Runnable() {
-		@ Override
-		public void run() {
-		new MainWindow(ctrl);
-		if(_inFile != null) {
-			try {
-				ctrl.loadEvents(new FileInputStream(_inFile));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		}
-	});
-	}
-	
-	
 
 }

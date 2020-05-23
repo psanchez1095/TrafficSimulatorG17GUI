@@ -1,5 +1,4 @@
 package simulator.view;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -23,11 +22,8 @@ import simulator.model.Vehicle;
 
 public class ChangeCO2ClassDialog extends JDialog {
 	
-	private final Integer [] contClass = {0,1,2,3,4,5,6,7,8,9,10};
-	private static final String TEXT = "Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now.";
 	private boolean boolOK;
 	private RoadMap map;
-	
 	private final JPanel contentPanel = new JPanel();
 	private JSpinner spTicks;
 	private JComboBox<Vehicle> vehicles;
@@ -35,12 +31,9 @@ public class ChangeCO2ClassDialog extends JDialog {
 	private DefaultComboBoxModel<Vehicle> vehiclesModel;
 	
 	public ChangeCO2ClassDialog(JFrame parent) {
-		
 		super(parent,true);
 		initGUI();
-		
 	}
-	
 	
 	private void initGUI() {
 
@@ -49,13 +42,12 @@ public class ChangeCO2ClassDialog extends JDialog {
         setResizable(false);
         setBounds(100, 100, 450, 160);
         
-        //Se le añade un layout
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.NORTH);
         contentPanel.setBackground(Color.white);
         
-        //Se le añade el texto
-        JTextArea texto = new JTextArea(TEXT);
+        String infoDialog = "Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now.";
+        JTextArea texto = new JTextArea(infoDialog);
         texto.setBounds(20, 20, 440, 220);
         texto.setWrapStyleWord(true);
         texto.setLineWrap(true);
@@ -78,23 +70,22 @@ public class ChangeCO2ClassDialog extends JDialog {
         JLabel tTicks = new JLabel(" Ticks: " );
         JButton bCancel = new JButton("Cancel");
         JButton bOk = new JButton("OK");
+        Integer [] contClass = {0,1,2,3,4,5,6,7,8,9,10};
         cbCO2 = new JComboBox<Integer> (contClass);
-        
-        panelCMain.add(tVehicle);
         
         vehiclesModel = new DefaultComboBoxModel<Vehicle>();
         vehicles = new JComboBox();
         vehicles.setModel(vehiclesModel);
         
-        panelCMain.add(vehicles);
-        panelCMain.add(tCO2);   
-       
-        panelCMain.add(cbCO2);
-        panelCMain.add(tTicks); 
-        
         spTicks = new JSpinner();
         SpinnerModel model =   new SpinnerNumberModel(1, 0, 20, 1);
         spTicks.setModel(model);
+        
+        panelCMain.add(tVehicle);
+        panelCMain.add(vehicles);
+        panelCMain.add(tCO2);   
+        panelCMain.add(cbCO2);
+        panelCMain.add(tTicks); 
         panelCMain.add(spTicks); 
         
         actionBotonCancelar(bCancel);
@@ -130,19 +121,7 @@ public class ChangeCO2ClassDialog extends JDialog {
 		});
 	}
 	
-	protected int getTicks() {
-		return (int) spTicks.getValue();
-	}
-	
-	protected int getContClass() {
-		return (int) cbCO2.getSelectedItem();
-	}
-	
-	protected Vehicle getVehicle() {
-		return (Vehicle) vehicles.getSelectedItem();
-	}
-	
-	protected boolean open(RoadMap map) {
+	protected boolean open(RoadMap map) throws Exception {
 		
 		this.map = map;
 		
@@ -155,6 +134,17 @@ public class ChangeCO2ClassDialog extends JDialog {
 		return boolOK;
 		
 	}
+
+	protected int getTicks() {
+		return (int) spTicks.getValue();
+	}
 	
+	protected int getContClass() {
+		return (int) cbCO2.getSelectedItem();
+	}
+	
+	protected Vehicle getVehicle() {
+		return (Vehicle) vehicles.getSelectedItem();
+	}
 	
 }

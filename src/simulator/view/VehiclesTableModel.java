@@ -1,10 +1,9 @@
 package simulator.view;
 
 import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
-
 import simulator.control.Controller;
+import simulator.enumerados.VehicleStatus;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
@@ -25,23 +24,8 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
         
     }
     
-    
-	@Override
-	public int getColumnCount() {
-		return columnas.length;
-	}
-
-	@Override
-	public int getRowCount() {
-		
-		if(this.listVehiclesTable == null) return 0;
-		else return listVehiclesTable.size();
-		
-	}
-
-	@Override
+    @Override
 	public Object getValueAt(int rowIndex, int columnIndex){
-		
 		
 		Object referenteVehic = null;
 		
@@ -50,7 +34,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 				return referenteVehic ;
 			}
 			else if (columnIndex == 1) {
-				referenteVehic = statusVehicle(rowIndex);
+				referenteVehic = getVehicleStatus(rowIndex);
 				return referenteVehic ;
 			}
 			else if (columnIndex == 2) {
@@ -80,72 +64,62 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 			else return referenteVehic = null;
 			
 	}
-	
-	public Object statusVehicle(int fila) {
-		Object status =null;
+    
+    public Object getVehicleStatus(int fila) {
+    	
+		Object vStatus =null;
 		
-		switch(listVehiclesTable.get(fila).getStatus()) {
-		case PENDING: 
-			status = "Pending";
-			break;
-		case TRAVELING:
-			status = listVehiclesTable.get(fila).getRoadV() + ":" + listVehiclesTable.get(fila).getLocation();
-			break;
-		case WAITING:
-			status = "Waiting";
-			break;
-		case ARRIVED:
-			status = "Arrived";
-			break;
+		if(listVehiclesTable.get(fila).getStatus()== VehicleStatus.PENDING){
+			vStatus = "Pending";
+			return vStatus;
+		}
+		else if(listVehiclesTable.get(fila).getStatus()== VehicleStatus.TRAVELING){
+			vStatus = listVehiclesTable.get(fila).getRoadV() + ":" + listVehiclesTable.get(fila).getLocation();
+			return vStatus;
+		}
+		else if(listVehiclesTable.get(fila).getStatus()== VehicleStatus.WAITING){
+			vStatus = "Waiting";
+			return vStatus;
+		}
+		else if(listVehiclesTable.get(fila).getStatus()== VehicleStatus.ARRIVED){
+			vStatus = "Arrived";
+			return vStatus;
+		}
+		
+		return vStatus;
 	}
-		return status;
+    
+	@Override
+	public int getColumnCount() {
+		return columnas.length;
 	}
 	
 	@Override
-	public boolean isCellEditable(int row, int column) {
-		return false;
+	public String getColumnName(int indice) { 
+		return columnas[indice]; 
 	}
 	
-
 	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
+	public int getRowCount() {
+		if(this.listVehiclesTable == null) return 0;
+		else return listVehiclesTable.size();
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-
 		listVehiclesTable = map.getVehicles();
 		this.fireTableDataChanged();
-
 	}
 
 	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		
-
-	}
-
+	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void onReset(RoadMap map, List<Event> events, int time) {}
 	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-
-	}
-	public String getColumnName(int indice) { 
-		return columnas[indice]; 
-		}
+	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	@Override
+	public void onError(String err) {}
 
 }

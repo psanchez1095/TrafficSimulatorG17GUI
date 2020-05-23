@@ -15,40 +15,14 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy{
 			int lastSwitchingTime, int currTime) {
 
 		
-		if (roadList.isEmpty()) {
-			return -1;
-		}
+		if(roadList.size() == 0) return -1;
 		
-		if (currGreen == -1) {
-			
-			int i = 0, mostCrowded = 0;
-			
-			 while(i < vehicleListofList.size()){
-				 
-		        if(vehicleListofList.get(i).size() > mostCrowded) mostCrowded = i; 
-		        i++;                                     
-		        
-		}
-			 return mostCrowded;
-			 }                               
-	            
+		else if(currGreen == -1) {return 0;}
+	
 		
-		if (currTime - lastSwitchingTime < this.timeSlot ) {
-			return currGreen;
-		}
-		
-		else{
-			int i = currGreen + 1, indexGreen = currGreen;
-			
-	        while (i % vehicleListofList.size() != currGreen){
-	        	
-	            if (vehicleListofList.get(i).size() > vehicleListofList.get(indexGreen).size()) indexGreen = i;
-	            i++;
-	            
-	        }
-	        
-	        return indexGreen;
-	}
+		else if(currTime - lastSwitchingTime < this.timeSlot) return currGreen;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

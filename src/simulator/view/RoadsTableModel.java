@@ -3,13 +3,12 @@ package simulator.view;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
-import simulator.model.Vehicle;
+
 
 public class RoadsTableModel extends AbstractTableModel implements TrafficSimObserver {
 	
@@ -26,100 +25,67 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
         
     }
   
-    
-	@Override
-	public int getColumnCount() {
-		return columnas.length;
-	}
-
-	@Override
-	public int getRowCount() {
-		
-		if(this.listRoadsTable == null) return 0;
-		else return listRoadsTable.size();
-		
-	}
-
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex){
 		
 		Object referenteRoad = null;
 		
-		switch (columnIndex) {
-		
-		case 0:
-			referenteRoad = listRoadsTable.get(rowIndex).getId();
-			break;
-		case 1:
-			referenteRoad = listRoadsTable.get(rowIndex).getLength();
-			break;
-		case 2:
-			referenteRoad = listRoadsTable.get(rowIndex).getTiempo();
-			break;
-		case 3:
-			referenteRoad = listRoadsTable.get(rowIndex).getMaxSpeed();
-			break;
-		case 4:
-			referenteRoad = listRoadsTable.get(rowIndex).getActualSpeedLimit();
-			break;
-		case 5:
-			referenteRoad = listRoadsTable.get(rowIndex).getTotalCO2();
-			break;
-		case 6:
-			referenteRoad = listRoadsTable.get(rowIndex).getCO2Limit();
-			break;
+		if(columnIndex==0) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getId();
+		}
+		else if(columnIndex==1) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getLength();
+		}
+		else if(columnIndex==2) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getTiempo();
+		}
+		else if(columnIndex==3) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getMaxSpeed();
+		}
+		else if(columnIndex==4) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getActualSpeedLimit();
+		}
+		else if(columnIndex==5) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getTotalCO2();
+		}
+		else if(columnIndex==6) {
+			return referenteRoad = listRoadsTable.get(rowIndex).getCO2Limit();
 		}
 		
 		return referenteRoad;
 		
 	}
 	
-	@Override
-	public boolean isCellEditable(int row, int column) {
-		return false;
+	public String getColumnName(int indice) { 
+		return columnas[indice]; 
 	}
-	
+	    
+		@Override
+	public int getColumnCount() {
+		return columnas.length;
+	}
 
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
+		@Override
+	public int getRowCount() {
+		if(this.listRoadsTable == null) return 0;
+		else return listRoadsTable.size();
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time){
-		
 		listRoadsTable = map.getRoads();
 		this.fireTableDataChanged();
-
-	}
-
-	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		
-
-	}
-
-	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-
 	}
 	
-	public String getColumnName(int indice) { 
-		return columnas[indice]; 
-		}
-
+	@Override
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
+	@Override
+	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
+	@Override
+	public void onReset(RoadMap map, List<Event> events, int time) {}
+	@Override
+	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	@Override
+	public void onError(String err) {}
+	
 }

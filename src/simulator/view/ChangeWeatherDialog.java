@@ -1,5 +1,4 @@
 package simulator.view;
-
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.enumerados.Weather;
@@ -18,34 +17,27 @@ import javax.swing.SpinnerNumberModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class ChangeWeatherDialog extends JDialog {
 	
-	private boolean boolOK;
-	private static final String TEXT = "Schedule an event to change the weather of a road after a given number of simulation ticks from now.";
-	private final JPanel contPanel = new JPanel();
 	private RoadMap map;
-	
+	private boolean boolOK;
+	private final JPanel contPanel = new JPanel();
+
 	private JSpinner ticksSpinner;
 	private JComboBox<Road> roadsComboBox;
 	private JComboBox<Weather> weatherComboBox;
 	private DefaultComboBoxModel<Road> roadsModel;
 	
-	
 	public ChangeWeatherDialog(JFrame parent) {
-		
 		super(parent,true);
 		initGUI();
 	}
 	
-	
 	private void initGUI() {
-		
 		
 		setTitle("Change Road Weather");
 		
@@ -54,13 +46,12 @@ public class ChangeWeatherDialog extends JDialog {
         setBounds(100, 100, 450, 160);
         boolOK = false;
         
-        //Se le añade un layout
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contPanel, BorderLayout.NORTH);
         contPanel.setBackground(Color.white);
         
-        //Se le añade el texto
-        JTextArea texto = new JTextArea(TEXT);
+        String infoDialog = "Schedule an event to change the weather of a road after a given number of simulation ticks from now.";
+        JTextArea texto = new JTextArea(infoDialog);
         
         texto.setBounds(20, 20, 440, 220);
         texto.setWrapStyleWord(true);
@@ -70,7 +61,7 @@ public class ChangeWeatherDialog extends JDialog {
         contPanel.add(texto);
         
         JPanel panelC = new JPanel();
-        getContentPane().add(panelC, BorderLayout.CENTER); // Añadimos el panel principal al panel contenedor
+        getContentPane().add(panelC, BorderLayout.CENTER); 
         panelC.setBackground(Color.white);
         
         JPanel panelCMain = new JPanel();
@@ -78,7 +69,7 @@ public class ChangeWeatherDialog extends JDialog {
         panelCMain.setLayout(new FlowLayout());
         panelCMain.setBackground(Color.white);
         
-        //Instanciamos cada uno de los JLabel, el JSpinner para los ticks y los botones de cancelar y aceptar el cambio
+        
         JLabel tRoad = new JLabel(" Road: " );
         JLabel tWeather = new JLabel(" Weather: " );
         JLabel tTicks = new JLabel(" Ticks: " );
@@ -110,7 +101,7 @@ public class ChangeWeatherDialog extends JDialog {
         panelB.setBackground(Color.white);
         panelB.add(bCancel);
         panelB.add(bOk);
-        getContentPane().add(panelB, BorderLayout.SOUTH); // Añadimos el panel que contiene los botones ok y cancel al panel contenedor
+        getContentPane().add(panelB, BorderLayout.SOUTH);
         
         this.pack();
     	this.setLocationRelativeTo(null);
@@ -137,19 +128,7 @@ public class ChangeWeatherDialog extends JDialog {
 		});
 	}
 	
-	protected int getTicks() {
-		return (int) ticksSpinner.getValue();
-	}
-	
-	protected Road getRoad() {
-		return (Road) roadsComboBox.getSelectedItem();
-	}
-	
-	protected Weather getWeather() {
-		return (Weather) weatherComboBox.getSelectedItem();
-	}
-	
-	boolean open(RoadMap map) {
+	boolean open(RoadMap map) throws Exception {
 		
 		this.map = map;
 		
@@ -159,7 +138,18 @@ public class ChangeWeatherDialog extends JDialog {
 		
 		return boolOK;
 	}
+
+	protected int getTicks() {
+		return (int) ticksSpinner.getValue();
+	}
+	protected Road getRoad() {
+		return (Road) roadsComboBox.getSelectedItem();
+	}
+	protected Weather getWeather() {
+		return (Weather) weatherComboBox.getSelectedItem();
+	}
 	
+		
 	
 	
 	

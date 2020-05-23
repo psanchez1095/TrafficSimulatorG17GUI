@@ -183,10 +183,8 @@ public class Junction extends SimulatedObject {
 
 	public int getGreenLightIndex() {
 		// TODO Auto-generated method stub
-		return this.getGreenLightIndex();
+		return this.indexGreenRoad;
 	}
-
-
 	public List<Road> getInRoads(){
 		// TODO Auto-generated method stub
 		return Collections.unmodifiableList(this.roadList);

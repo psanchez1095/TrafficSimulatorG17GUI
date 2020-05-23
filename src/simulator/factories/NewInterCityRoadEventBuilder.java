@@ -4,9 +4,10 @@ import org.json.JSONObject;
 
 import simulator.enumerados.Weather;
 import simulator.model.Event;
+import simulator.model.NewCityRoadEvent;
 import simulator.model.NewInterCityRoadEvent;
 
-public class NewInterCityRoadEventBuilder extends Builder<Event> {
+public class NewInterCityRoadEventBuilder extends NewRoadEventBuilder {
 	
 	protected Event newInterCityRoadEvent;
 	
@@ -26,5 +27,8 @@ public class NewInterCityRoadEventBuilder extends Builder<Event> {
 	}
 	
 	
-	
+	@Override
+	Event createTheRoad() {
+		 return new NewCityRoadEvent(time, id, cruceOrigen, cruceDestino, length, contaminacionLimit, maxspeed, tiempo);
+	}
 }

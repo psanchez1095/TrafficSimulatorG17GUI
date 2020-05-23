@@ -17,7 +17,12 @@ public abstract class Event implements Comparable<Event> {
 
 	@Override
 	public int compareTo(Event o) {
-		return Integer.compare(_time, o._time);
+		
+		if(o._time < this._time) return 1;
+		else if(o._time>this._time) return -1;
+		else return 0;
+	
+		
 	}
 
 	abstract void execute(RoadMap map);
